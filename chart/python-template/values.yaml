@@ -1,0 +1,55 @@
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+serviceAccount:
+  create: true
+  annotations: {}
+
+image:
+  repository: docker.wiseflow.io/k8s/python-template
+  pullPolicy: IfNotPresent
+
+podAnnotations: {}
+
+service:
+  annotations: {}
+  type: headless
+  port: 80
+
+ingress:
+  enabled: false
+  annotations:
+  hosts: []
+  tls: []
+
+replicaCount: 1
+
+resources: {}
+
+disruptionBudget:
+  enabled: true
+  maxUnavailable: 1
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 1
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      targetAverageUtilization: 50
+
+env:
+  MYSQL_PORT: 26257
+  MYSQL_USER: "python-template"
+  MYSQL_NAME: "python-template"
+
+secrets: {}
+
+envFrom: []

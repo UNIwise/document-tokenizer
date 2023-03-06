@@ -1,0 +1,22 @@
+name: helm
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "chart/**"
+
+jobs:
+  push:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v1
+      - name: Helm Push Action
+        uses: Goodsmileduck/helm-push-action@v3
+        env:
+          CHART_FOLDER: ${{ github.event.repository.name }}
+          CHARTMUSEUM_URL: https://docker.wiseflow.io/chartrepo/k8s
+          CHARTMUSEUM_USER: ${{ secrets.HARBOR_USERNAME }}
+          CHARTMUSEUM_PASSWORD: ${{ secrets.HARBOR_TOKEN }}
+          SOURCE_DIR: chart

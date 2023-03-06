@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "python-template.fullname" . }}
+  labels:
+    {{- include "python-template.full.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{ include "python-template.common.labels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{ include "python-template.common.labels" . | nindent 8 }}
+      annotations: 
+        checksum/config: {{ include "python-template.env.config" . | sha256sum | quote }}
+        checksum/secret: {{ include "python-template.env.secret" . | sha256sum | quote }}
+        {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- if or .Values.imagePullSecrets .Values.secrets.dockerCredentials }}
+      imagePullSecrets:
+        {{- with .Values.imagePullSecrets }}
+        {{ toYaml . | nindent 8 }}
+        {{- end }}
+        {{- if .Values.secrets.dockerCredentials }}
+        - name: {{ template "python-template.fullname" . }}-docker-secret
+        {{- end }}
+      {{- end }}
+      terminationGracePeriodSeconds: 90
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          envFrom: 
+            - configMapRef: 
+                name: {{ include "python-template.fullname" . }}
+            - secretRef: 
+                name: {{ include "python-template.fullname" . }}
+            {{- if .Values.envFrom }}
+            {{- toYaml .Values.envFrom | nindent 12 }}
+            {{- end }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

@@ -1,0 +1,18 @@
+{{- if .Values.autoscaling.enabled }}
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "python-template.fullname" . }}
+  labels:
+    {{- include "python-template.common.labels" . | nindent 4 }}
+    helm.sh/chart: {{ template "python-template.chart" . }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "python-template.fullname" . }}
+  minReplicas: {{ default .Values.replicaCount .Values.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.autoscaling.maxReplicas }}
+  metrics: {{- toYaml .Values.autoscaling.metrics | nindent 4 }}
+{{- end }}
