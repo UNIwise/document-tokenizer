@@ -1,13 +1,13 @@
 [tool.poetry]
-name = "python-template"
+name = "document-tokenizer"
 version = "0.1.0"
-description = "Python github template"
+description = "Document tokinzer  for similarity service"
 
 authors = [
     "Teis N. Petersen <teis.petersen@uniwise.dk>"
 ]
 
-repository = "https://github.com/UNIwise/python-template"
+repository = "https://github.com/UNIwise/document-tokenizer"
 
 [tool.poetry.dependencies]
 python = ">=3.8"

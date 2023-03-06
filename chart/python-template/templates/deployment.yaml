@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "python-template.fullname" . }}
+  name: {{ include "document-tokenizer.fullname" . }}
   labels:
-    {{- include "python-template.full.labels" . | nindent 4 }}
+    {{- include "document-tokenizer.full.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{ include "python-template.common.labels" . | nindent 6 }}
+      {{ include "document-tokenizer.common.labels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{ include "python-template.common.labels" . | nindent 8 }}
+        {{ include "document-tokenizer.common.labels" . | nindent 8 }}
       annotations: 
-        checksum/config: {{ include "python-template.env.config" . | sha256sum | quote }}
-        checksum/secret: {{ include "python-template.env.secret" . | sha256sum | quote }}
+        checksum/config: {{ include "document-tokenizer.env.config" . | sha256sum | quote }}
+        checksum/secret: {{ include "document-tokenizer.env.secret" . | sha256sum | quote }}
         {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -26,7 +26,7 @@ spec:
         {{ toYaml . | nindent 8 }}
         {{- end }}
         {{- if .Values.secrets.dockerCredentials }}
-        - name: {{ template "python-template.fullname" . }}-docker-secret
+        - name: {{ template "document-tokenizer.fullname" . }}-docker-secret
         {{- end }}
       {{- end }}
       terminationGracePeriodSeconds: 90
@@ -36,9 +36,9 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           envFrom: 
             - configMapRef: 
-                name: {{ include "python-template.fullname" . }}
+                name: {{ include "document-tokenizer.fullname" . }}
             - secretRef: 
-                name: {{ include "python-template.fullname" . }}
+                name: {{ include "document-tokenizer.fullname" . }}
             {{- if .Values.envFrom }}
             {{- toYaml .Values.envFrom | nindent 12 }}
             {{- end }}

@@ -2,7 +2,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "python-template.name" -}}
+{{- define "document-tokenizer.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
@@ -11,7 +11,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "python-template.fullname" -}}
+{{- define "document-tokenizer.fullname" -}}
 {{- if .Values.fullnameOverride -}}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
@@ -24,22 +24,22 @@ If release name contains chart name it will be used as a full name.
 {{- end -}}
 {{- end -}}
 
-{{- define "python-template.common.labels" -}}
-app.kubernetes.io/name: {{ include "python-template.name" . }}
+{{- define "document-tokenizer.common.labels" -}}
+app.kubernetes.io/name: {{ include "document-tokenizer.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "python-template.chart" -}}
+{{- define "document-tokenizer.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*
 Redis ha name
 */}}
-{{- define "python-template.redis-ha.fullname" -}}
+{{- define "document-tokenizer.redis-ha.fullname" -}}
 {{- if .Values.redisha.fullnameOverride -}}
 {{- .Values.redisha.fullnameOverride | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
@@ -55,7 +55,7 @@ Redis ha name
 {{/*
 Create environment variables
 */}}
-{{- define "python-template.env.config" -}}
+{{- define "document-tokenizer.env.config" -}}
 REST_PORT: "80"
 
 {{- range $key, $val := .Values.env }}
@@ -66,9 +66,9 @@ REST_PORT: "80"
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "python-template.serviceAccountName" -}}
+{{- define "document-tokenizer.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create -}}
-    {{ default (include "python-template.fullname" .) .Values.serviceAccount.name }}
+    {{ default (include "document-tokenizer.fullname" .) .Values.serviceAccount.name }}
 {{- else -}}
     {{ default "default" .Values.serviceAccount.name }}
 {{- end -}}
@@ -77,14 +77,14 @@ Create the name of the service account to use
 {{/*
 Create secret environment variables
 */}}
-{{- define "python-template.env.secret" -}}
+{{- define "document-tokenizer.env.secret" -}}
 {{- range $key, $val := .Values.secrets }}
 {{ printf "%s: %s" $key (b64enc $val | quote) }}
 {{ end -}}
 {{- end -}}
 
-{{- define "python-template.full.labels" -}}
-{{ include "python-template.common.labels" . }}
-helm.sh/chart: {{ include "python-template.chart" . }}
+{{- define "document-tokenizer.full.labels" -}}
+{{ include "document-tokenizer.common.labels" . }}
+helm.sh/chart: {{ include "document-tokenizer.chart" . }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}

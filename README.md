@@ -1,4 +1,6 @@
-# Python Template
+# Document Tokenizer
+
+Preprocessing of documents into sentences
 
 ## Guidelines
 

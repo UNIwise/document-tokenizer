@@ -2,7 +2,7 @@ version: '3.1'
 
 services:
   api:
-    image: python-template:0.0.1
+    image: document-tokenizer:0.0.1
     ports:
       - 80:8090
     environment:

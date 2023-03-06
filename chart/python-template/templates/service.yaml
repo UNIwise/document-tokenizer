@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "python-template.fullname" . }}
+  name: {{ include "document-tokenizer.fullname" . }}
   labels:
-    {{- include "python-template.full.labels" . | nindent 4 }}
+    {{- include "document-tokenizer.full.labels" . | nindent 4 }}
 spec:
   {{- if eq (lower .Values.service.type) "headless" }}
   type: ClusterIP
@@ -17,4 +17,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    {{- include "python-template.common.labels" . | nindent 4 }}
+    {{- include "document-tokenizer.common.labels" . | nindent 4 }}

@@ -11,7 +11,7 @@ serviceAccount:
   annotations: {}
 
 image:
-  repository: docker.wiseflow.io/k8s/python-template
+  repository: docker.wiseflow.io/k8s/document-tokenizer
   pullPolicy: IfNotPresent
 
 podAnnotations: {}
@@ -47,8 +47,8 @@ autoscaling:
 
 env:
   MYSQL_PORT: 26257
-  MYSQL_USER: "python-template"
-  MYSQL_NAME: "python-template"
+  MYSQL_USER: "document-tokenizer"
+  MYSQL_NAME: "document-tokenizer"
 
 secrets: {}
 
