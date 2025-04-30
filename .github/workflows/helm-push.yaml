@@ -9,7 +9,7 @@ on:
 
 jobs:
   push:
-    runs-on: self-hosted
+    runs-on: default
     steps:
       - uses: actions/checkout@v1
       - name: Helm Push Action
