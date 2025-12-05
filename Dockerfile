@@ -2,7 +2,7 @@ FROM python:3.10.9-slim as build
 
 COPY ./pyproject.toml ./poetry.lock /
 
-RUN pip install poetry
+RUN pip install poetry poetry-plugin-export
 
 RUN poetry export -f requirements.txt --output requirements.txt --without-hashes
 
